@@ -9,6 +9,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/preview/:shortUrl" element={<Preview />} />
         <Route path="/:shortUrl" element={<Redirect />} />
       </Routes>
     </BrowserRouter>
