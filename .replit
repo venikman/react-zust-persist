@@ -1,5 +1,5 @@
 run = "npm run dev"
-modules = ["nodejs-20"]
+modules = ["nodejs-22"]
 hidden = [".config", "package-lock.json"]
 entrypoint = "index.html"
 
@@ -21,3 +21,7 @@ externalPort = 3000
 [[ports]]
 localPort = 5173
 externalPort = 80
+
+[[ports]]
+localPort = 5174
+externalPort = 3001
