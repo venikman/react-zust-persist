@@ -8,6 +8,9 @@ export default function Home() {
   const [shortUrl, setShortUrl] = useState('');
   const navigate = useNavigate();
   const addUrl = useUrlStore((state) => state.addUrl);
+  const setSearchTerm = useUrlStore((state) => state.setSearchTerm);
+  const filteredUrls = useUrlStore((state) => state.filteredUrls());
+  const searchTerm = useUrlStore((state) => state.searchTerm);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,6 +37,20 @@ export default function Home() {
   return (
     <main className="container">
       <h1>URL Shortener</h1>
+      <input
+        type="text"
+        placeholder="Search URLs..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: '20px', padding: '5px' }}
+      />
+      <div style={{ marginBottom: '20px' }}>
+        {Object.entries(filteredUrls).map(([short, long]) => (
+          <div key={short} style={{ marginBottom: '10px' }}>
+            <strong>{short}</strong>: {long}
+          </div>
+        ))}
+      </div>
       <form onSubmit={handleSubmit} className="form-container">
         <input
           type="url"
