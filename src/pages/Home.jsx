@@ -8,12 +8,23 @@ export default function Home() {
   const navigate = useNavigate();
   const { addUrl, setSearchTerm, urls, searchTerm, urlCount, reset } = useUrlStore();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const short = Math.random().toString(36).substring(2, 8);
-    addUrl(short, url);
-    setShortUrl(`${window.location.origin}/${short}`);
-    navigate(`/preview/${short}`);
+    try {
+      const response = await fetch('http://localhost:3000/urls', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url })
+      });
+      const data = await response.json();
+      addUrl(data.shortUrl, url);
+      setShortUrl(`${window.location.origin}/${data.shortUrl}`);
+      navigate(`/preview/${data.shortUrl}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const filteredUrls = Object.entries(urls).filter(([short, long]) => 
