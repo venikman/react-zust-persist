@@ -57,6 +57,10 @@ export default function Home() {
           </a>
         </div>
       )}
+      <div className="stats">
+        <p>Total URLs shortened: {useUrlStore((state) => state.urlCount)}</p>
+        <button onClick={useUrlStore((state) => state.reset)}>Reset All</button>
+      </div>
     </main>
   );
 }
