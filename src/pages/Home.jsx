@@ -1,35 +1,39 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import create from 'zustand';
+
+// Zustand Store
+const useUrlStore = create((set) => ({
+  urls: {},
+  addUrl: (short, url) => set((state) => ({ urls: { ...state.urls, [short]: url } })),
+}));
+
 
 export default function Home() {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const navigate = useNavigate();
+  const addUrl = useUrlStore((state) => state.addUrl);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const short = Math.random().toString(36).substring(2, 8);
-    localStorage.setItem(short, url);
+    addUrl(short, url);
     setShortUrl(`${window.location.origin}/${short}`);
-    // Navigate with history (can go back)
     navigate(`/preview/${short}`);
   };
 
   const handleReplace = () => {
     const short = Math.random().toString(36).substring(2, 8);
     localStorage.setItem(short, url);
-    // Replace current route (can't go back)
     navigate(`/preview/${short}`, { replace: true });
   };
 
   const handleGoBack = () => {
-    // Go back in history
     navigate(-1);
   };
 
   const handleGoForward = () => {
-    // Go forward in history
     navigate(1);
   };
 
