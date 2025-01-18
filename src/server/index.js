@@ -3,11 +3,27 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 
 const fastify = Fastify({
-  logger: true
+  logger: true,
+  trustProxy: true,
+  disableRequestLogging: true
+});
+
+// Graceful shutdown
+const signals = ['SIGTERM', 'SIGINT'];
+signals.forEach((signal) => {
+  process.on(signal, async () => {
+    await fastify.close();
+    process.exit(0);
+  });
 });
 
 await fastify.register(cors, {
   origin: true
+});
+
+// Health check endpoint
+fastify.get('/health', async () => {
+  return { status: 'ok' };
 });
 
 // Example route
