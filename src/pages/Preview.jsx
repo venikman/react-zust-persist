@@ -1,9 +1,10 @@
 
 import { useParams } from 'react-router-dom';
+import useUrlStore from '../store/urlStore';
 
 export default function Preview() {
   const { shortUrl } = useParams();
-  const longUrl = localStorage.getItem(shortUrl);
+  const longUrl = useUrlStore((state) => state.urls[shortUrl]);
 
   return (
     <main className="container">

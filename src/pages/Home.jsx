@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import create from 'zustand';
-
-// Zustand Store
-const useUrlStore = create((set) => ({
-  urls: {},
-  addUrl: (short, url) => set((state) => ({ urls: { ...state.urls, [short]: url } })),
-}));
+import useUrlStore from '../store/urlStore';
 
 
 export default function Home() {
