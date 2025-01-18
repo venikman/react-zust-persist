@@ -15,8 +15,10 @@ export default function Preview() {
     <main className="container">
       <h1>URL Preview</h1>
       <div className="preview-info">
+        <p>Parameter from URL (useParams): <code>{shortUrl}</code></p>
         <p>Short URL: {window.location.origin}/{shortUrl}</p>
         <p>Redirects to: {longUrl}</p>
+        <p>URL Length: {longUrl?.length || 0} characters</p>
       </div>
       <button onClick={handleBack} style={{ marginTop: '20px' }}>Go Back</button>
     </main>
