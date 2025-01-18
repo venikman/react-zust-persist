@@ -2,15 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUrlStore from '../store/urlStore';
 
-
 export default function Home() {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const navigate = useNavigate();
-  const addUrl = useUrlStore((state) => state.addUrl);
-  const setSearchTerm = useUrlStore((state) => state.setSearchTerm);
-  const filteredUrls = useUrlStore((state) => state.filteredUrls());
-  const searchTerm = useUrlStore((state) => state.searchTerm);
+  const { addUrl, setSearchTerm, urls, searchTerm, urlCount, reset } = useUrlStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,19 +16,9 @@ export default function Home() {
     navigate(`/preview/${short}`);
   };
 
-  const handleReplace = () => {
-    const short = Math.random().toString(36).substring(2, 8);
-    localStorage.setItem(short, url);
-    navigate(`/preview/${short}`, { replace: true });
-  };
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
-  const handleGoForward = () => {
-    navigate(1);
-  };
+  const filteredUrls = Object.entries(urls).filter(([short, long]) => 
+    !searchTerm || long.includes(searchTerm) || short.includes(searchTerm)
+  );
 
   return (
     <main className="container">
@@ -45,7 +31,7 @@ export default function Home() {
         style={{ marginBottom: '20px', padding: '5px' }}
       />
       <div style={{ marginBottom: '20px' }}>
-        {Object.entries(filteredUrls).map(([short, long]) => (
+        {filteredUrls.map(([short, long]) => (
           <div key={short} style={{ marginBottom: '10px' }}>
             <strong>{short}</strong>: {long}
           </div>
@@ -59,12 +45,7 @@ export default function Home() {
           placeholder="Enter URL to shorten"
           required
         />
-        <div className="button-group">
-          <button type="submit">Navigate to Preview</button>
-          <button type="button" onClick={handleReplace}>Replace with Preview</button>
-          <button type="button" onClick={handleGoBack}>Go Back</button>
-          <button type="button" onClick={handleGoForward}>Go Forward</button>
-        </div>
+        <button type="submit">Shorten URL</button>
       </form>
       {shortUrl && (
         <div className="result">
@@ -75,8 +56,8 @@ export default function Home() {
         </div>
       )}
       <div className="stats">
-        <p>Total URLs shortened: {useUrlStore((state) => state.urlCount)}</p>
-        <button onClick={useUrlStore((state) => state.reset)}>Reset All</button>
+        <p>Total URLs shortened: {urlCount}</p>
+        <button onClick={reset}>Reset All</button>
       </div>
     </main>
   );

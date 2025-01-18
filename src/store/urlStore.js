@@ -4,29 +4,21 @@ import { persist } from 'zustand/middleware';
 
 const useUrlStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       urls: {},
       urlCount: 0,
       searchTerm: '',
       setSearchTerm: (term) => set({ searchTerm: term }),
-      // Derived state (computed value)
-      filteredUrls: () => {
-        const state = get();
-        if (!state.searchTerm) return state.urls;
-        return Object.fromEntries(
-          Object.entries(state.urls).filter(([short, long]) => 
-            long.includes(state.searchTerm) || short.includes(state.searchTerm)
-          )
-        );
-      },
+      filteredUrls: {},
       addUrl: (shortUrl, longUrl) => 
         set((state) => ({
           urls: { ...state.urls, [shortUrl]: longUrl },
-          urlCount: state.urlCount + 1
+          urlCount: state.urlCount + 1,
+          filteredUrls: state.urls
         })),
-      getUrl: (shortUrl) => get().urls[shortUrl],
-      getTotalUrls: () => get().urlCount,
-      reset: () => set({ urls: {}, urlCount: 0 })
+      getUrl: (shortUrl) => useUrlStore.getState().urls[shortUrl],
+      getTotalUrls: () => useUrlStore.getState().urlCount,
+      reset: () => set({ urls: {}, urlCount: 0, searchTerm: '', filteredUrls: {} })
     }),
     {
       name: 'url-storage'
