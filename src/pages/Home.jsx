@@ -11,7 +11,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://0.0.0.0:3000/urls', {
+      const response = await fetch('/api/urls', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
