@@ -42,7 +42,7 @@ fastify.get('/', async (request, reply) => {
 });
 
 // URL shortener routes
-fastify.post('/urls', async (request, reply) => {
+fastify.post('/api/urls', async (request, reply) => {
   const { url } = request.body;
   const shortUrl = Math.random().toString(36).substring(2, 8);
   // Here you would typically save to a database
