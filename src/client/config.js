@@ -1,5 +1,6 @@
-config = () => {
-  return {
-    name: "stas",
-  };
+
+const config = {
+  name: "stas"
 };
+
+export default config;

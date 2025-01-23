@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUrlStore from '../store/urlStore';
+import config from '../config';
 
 export default function Home() {
   const [url, setUrl] = useState('');
@@ -33,7 +34,7 @@ export default function Home() {
 
   return (
     <main className="container">
-      <h1>URL Shortener</h1>
+      <h1>URL Shortener - {config.name}'s App</h1>
       <input
         type="text"
         placeholder="Search URLs..."
