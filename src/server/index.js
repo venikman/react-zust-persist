@@ -1,6 +1,10 @@
-
-import Fastify from 'fastify';
+import fastify from 'fastify';
 import cors from '@fastify/cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const fastify = Fastify({
   logger: true,
@@ -19,6 +23,12 @@ signals.forEach((signal) => {
 
 await fastify.register(cors, {
   origin: true
+});
+
+// Serve static files from the dist directory
+await fastify.register(import('@fastify/static'), {
+  root: path.join(__dirname, 'dist'),
+  prefix: '/'
 });
 
 // Health check endpoint
