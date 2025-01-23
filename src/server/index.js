@@ -1,3 +1,4 @@
+
 import fastify from 'fastify';
 import cors from '@fastify/cors';
 import path from 'path';
@@ -6,55 +7,45 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const fastify = fastify({
-  logger: true,
-  trustProxy: true,
-  disableRequestLogging: true
+const app = fastify({
+  logger: true
 });
 
-// Graceful shutdown
-const signals = ['SIGTERM', 'SIGINT'];
-signals.forEach((signal) => {
-  process.on(signal, async () => {
-    await fastify.close();
-    process.exit(0);
-  });
-});
-
-await fastify.register(cors, {
+// Register CORS
+await app.register(cors, {
   origin: true
 });
 
-// Register body parser
-await fastify.register(import('@fastify/formbody'));
-
-// Serve static files from the dist directory
-await fastify.register(import('@fastify/static'), {
+// Serve static files
+await app.register(import('@fastify/static'), {
   root: path.join(__dirname, 'dist'),
   prefix: '/'
 });
 
-// Health check endpoint
-fastify.get('/health', async () => {
+// URL shortener routes
+app.post('/api/urls', async (request, reply) => {
+  try {
+    const { url } = request.body;
+    if (!url) {
+      reply.code(400).send({ error: 'URL is required' });
+      return;
+    }
+    const shortUrl = Math.random().toString(36).substring(2, 8);
+    return { shortUrl, longUrl: url };
+  } catch (error) {
+    reply.code(500).send({ error: 'Internal server error' });
+  }
+});
+
+// Health check
+app.get('/health', async () => {
   return { status: 'ok' };
 });
 
-// Example route
-fastify.get('/', async (request, reply) => {
-  return { message: 'Hello from Fastify!' }
-});
-
-// URL shortener routes
-fastify.post('/api/urls', async (request, reply) => {
-  const { url } = request.body;
-  const shortUrl = Math.random().toString(36).substring(2, 8);
-  // Here you would typically save to a database
-  return { shortUrl, longUrl: url }
-});
-
+// Start server
 try {
-  await fastify.listen({ port: 3000, host: '0.0.0.0' });
+  await app.listen({ port: 3000, host: '0.0.0.0' });
 } catch (err) {
-  fastify.log.error(err);
+  app.log.error(err);
   process.exit(1);
 }
