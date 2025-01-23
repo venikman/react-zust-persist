@@ -25,16 +25,8 @@ await fastify.register(cors, {
   origin: true
 });
 
-// Register JSON body parser
-fastify.addContentTypeParser('application/json', { parseAs: 'string' }, function (req, body, done) {
-  try {
-    const json = JSON.parse(body);
-    done(null, json);
-  } catch (err) {
-    err.statusCode = 400;
-    done(err, undefined);
-  }
-});
+// Register body parser
+await fastify.register(import('@fastify/formbody'));
 
 // Serve static files from the dist directory
 await fastify.register(import('@fastify/static'), {
