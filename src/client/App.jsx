@@ -1,11 +1,18 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import React from 'react';
+import './App.css';
+import Home from '../pages/Home';
+import Redirect from '../pages/Redirect';
+import Preview from '../pages/Preview';
 
 export default function App() {
   return (
-    <div>
-      <h1>Hello from the URL Shortener!</h1>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/preview/:shortUrl" element={<Preview />} />
+        <Route path="/:shortUrl" element={<Redirect />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
