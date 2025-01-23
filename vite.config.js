@@ -10,9 +10,8 @@ export default defineConfig(({ mode }) => ({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://0.0.0.0:5173',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        target: 'http://0.0.0.0:3000',
+        changeOrigin: true
       }
     }
   },
