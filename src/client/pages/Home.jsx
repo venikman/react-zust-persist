@@ -12,7 +12,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${window.location.origin}/api/urls`, {
+      const response = await fetch('/api/urls', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
