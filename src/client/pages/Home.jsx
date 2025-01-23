@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUrlStore from '../store/urlStore';
-import config from '../config';
+const config = window.appConfig;
 
 export default function Home() {
   const [url, setUrl] = useState('');
