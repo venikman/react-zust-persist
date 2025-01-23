@@ -1,8 +1,10 @@
 
+import './Footer.css';
+
 const Footer = () => {
   return (
-    <footer style={{ textAlign: 'center', padding: '20px', marginTop: 'auto' }}>
-      {import.meta.env.VITE_FOOTER_TEXT}
+    <footer className="footer">
+      {import.meta.env.VITE_FOOTER_TEXT || 'URL Shortener'}
     </footer>
   );
 };
