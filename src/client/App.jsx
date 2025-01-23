@@ -1,12 +1,11 @@
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 
-function App() {
+export default function App() {
   return (
     <div>
-      <h1>Hello, world!</h1>
+      <h1>Hello from the URL Shortener!</h1>
     </div>
   );
 }
-
-export default App;
