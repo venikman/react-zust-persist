@@ -1,7 +1,3 @@
-
 const config = {
-  name: "stas"
+  name: "stas",
 };
-
-window.appConfig = config;
-export default config;
