@@ -16,6 +16,15 @@ await app.register(cors, {
   origin: true
 });
 
+// Register JSON parser
+app.addContentTypeParser('application/json', { parseAs: 'string' }, async function (req, body) {
+  try {
+    return JSON.parse(body);
+  } catch (err) {
+    throw new Error('Invalid JSON');
+  }
+});
+
 // Serve static files
 await app.register(import('@fastify/static'), {
   root: path.join(__dirname, 'dist'),
