@@ -1,0 +1,5 @@
+config = () => {
+  return {
+    name: "stas",
+  };
+};
