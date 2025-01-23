@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 export default function App() {
   return (
     <Router>
-      <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
+      <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/preview/:shortUrl" element={<Preview />} />
